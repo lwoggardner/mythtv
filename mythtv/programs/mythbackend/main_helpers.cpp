@@ -430,6 +430,11 @@ int handle_command(const MythCommandLineParser &cmdline)
         return BACKEND_EXIT_NO_MYTHCONTEXT;
     }
 
+    if (cmdline.Bootstrap())
+    {
+        return bootstrap();
+    }
+
     if (cmdline.WantUPnPRebuild())
     {
         VERBOSE(VB_GENERAL, "Rebuilding UPNP Media Map");
@@ -519,6 +524,7 @@ int handle_command(const MythCommandLineParser &cmdline)
         expirer->PrintExpireList(cmdline.GetPrintExpire());
         return BACKEND_EXIT_OK;
     }
+
 
     // This should never actually be reached..
     return BACKEND_EXIT_OK;
@@ -653,6 +659,17 @@ void print_warnings(const MythCommandLineParser &cmdline)
                 "********* The JobQueue has been DISABLED with "
                 "the --nojobqueue option *********");
     }
+}
+
+int bootstrap(void)
+{
+    if (!UpgradeTVDatabaseSchema(true, true))
+    {
+        VERBOSE(VB_IMPORTANT, "Couldn't upgrade database to new schema");
+        return BACKEND_EXIT_DB_OUTOFDATE;
+    }
+
+    return BACKEND_EXIT_OK;
 }
 
 int run_backend(const MythCommandLineParser &cmdline)

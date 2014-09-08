@@ -26,6 +26,7 @@ int connect_to_master(void);
 int setup_basics(const MythCommandLineParser &cmdline);
 void print_warnings(const MythCommandLineParser &cmdline);
 int run_backend(const MythCommandLineParser &cmdline);
+int bootstrap(void);
 
 namespace
 {

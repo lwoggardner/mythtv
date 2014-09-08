@@ -40,7 +40,7 @@ MythCommandLineParser::MythCommandLineParser(uint64_t things_to_parse) :
     noexpirer(false),
     clearsettingscache(false),
     wantupnprebuild(false),
-
+    bootstrap(false),
     wantsToExit(false)
 {
 }
@@ -248,6 +248,12 @@ bool MythCommandLineParser::Parse(
              !strcmp(argv[argpos],"--upnprebuild"))
     {
         wantupnprebuild = true;
+        return true;
+    }
+    else if ((parseTypes && kCLPBootstrap) &&
+            !strcmp(argv[argpos],"--bootstrap"))
+    {
+        bootstrap = true;
         return true;
     }
     else if ((parseTypes && kCLPNoJobqueue) &&
@@ -880,6 +886,11 @@ QString MythCommandLineParser::GetHelpString(bool with_header) const
     {
         msg << "--upnprebuild                  "
             << "Force an update of UPNP media" << endl;
+    }
+    if (parseTypes & kCLPBootstrap)
+    {
+        msg << "--bootstrap                    "
+            << "Upgrade the database and update" << endl;
     }
 
     if (parseTypes & kCLPInFile)

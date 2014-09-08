@@ -44,6 +44,7 @@ typedef enum {
     kCLPStartTime            = 0x0080000000ULL,
     kCLPPrintExpire          = 0x0100000000ULL,
     kCLPGeneratePreview      = 0x0200000000ULL,
+    kCLPBootstrap            = 0x0400000000ULL,
 } ParseType;
 
 class MPUBLIC MythCommandLineParser
@@ -89,7 +90,7 @@ class MPUBLIC MythCommandLineParser
     bool Reschedule(void)           const { return resched;     }
     bool ClearSettingsCache(void)   const { return clearsettingscache; }
     bool WantUPnPRebuild(void)      const { return wantupnprebuild; }
-
+    bool Bootstrap(void)            const { return bootstrap; }
     bool    HasInvalidPreviewGenerationParams(void) const
     {
         return ((!chanid || !starttime.isValid()) && infile.isEmpty());
@@ -101,7 +102,8 @@ class MPUBLIC MythCommandLineParser
             !eventString.isEmpty()    || wantupnprebuild       ||
             setverbose                || clearsettingscache    ||
             printsched                || testsched             ||
-            resched                   || !printexpire.isEmpty();
+            resched                   || !printexpire.isEmpty() ||
+            bootstrap;
     }
 
     bool    WantsToExit(void) const { return wantsToExit; }
@@ -143,5 +145,6 @@ class MPUBLIC MythCommandLineParser
     bool                  noexpirer;
     bool                  clearsettingscache;
     bool                  wantupnprebuild;
+    bool                  bootstrap;
     bool                  wantsToExit;
 };
